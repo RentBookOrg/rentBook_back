@@ -1,0 +1,36 @@
+This file is for myself to avoid confusion and conflicts, making single mistake twice while coding.
+
+This project helps to sell or to rent books around the Uzbekistan based on sellers' location.
+Because of delivery issues, buyers and sellers will be from one region. What does it mean?
+For example, if seller is registered from Tashkent, the seller's books are only available for those who are 
+in Tashkent.
+
+However, I will try to add new features new steps but this is the only way to start the project.
+
+In this project, only sellers are registered not buyers. We only collect buyers' informations and comments for 
+statistics.
+
+1-step. 
+    Registeration
+
+If someone wants to sell or rent their books, they should get registered. How can they do this?
+When they enter our webpage, a model will be opened to get their location to show available books.
+On the top right corner of the main page, will be a button to post someone's available books called 
+"POST BOOK"
+
+When button is pressed, registerd part is opened and the user should fill the form. If the user is already registered
+the user should log in.
+
+After filling the form, the user should do email verification to make sure this is a person.
+If process of email verification is completed, i am not sure that the user should refresh the side or the process
+may be automatically.
+
+New form for book's info to get full information about the book.
+
+Then, the book will be posted to be seen to all in the same location.
+Token is stored on runtime variable. If the user close the tab token is cleaned (using page visibility api
+to notice the action)
+
+
+2-step
+    LOGIN
