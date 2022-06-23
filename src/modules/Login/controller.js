@@ -7,7 +7,7 @@ const LOGIN = async (req, res, next) => {
         const user = await req.models.User.findOne({ where: { user_email: req.body.email, username: req.body.username } })
         
         if(!user) {
-            next(new NotFoundError(404, 'such user is not exists!'))
+            next(new NotFoundError(404, 'such user does not exist!'))
             return
         }
 

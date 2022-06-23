@@ -1,4 +1,5 @@
 import RegisterRouter from './Register/router.js'
+import LoginRouter from './Login/router.js'
 
 
-export default RegisterRouter
+export  { RegisterRouter, LoginRouter }

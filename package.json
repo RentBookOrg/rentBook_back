@@ -25,8 +25,6 @@
     "nodemon": "^2.0.16"
   },
   "imports": {
-    "#joi": "./src/utils/joi.js",
-    "#token": "./src/utils/token.js",
     "#*": "./src/utils/*.js"
   }
 }

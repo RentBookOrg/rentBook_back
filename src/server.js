@@ -1,7 +1,7 @@
 import express from "express"
 import './conf.js'
 import dbConnection from './utils/db.js'
-import RegisterRouter from "./modules/index.js"
+import { RegisterRouter, LoginRouter } from "./modules/index.js"
 import errorHandler from "#errorHandler"
 
 !async function() {
@@ -16,6 +16,7 @@ import errorHandler from "#errorHandler"
 
     // routers
     app.use(RegisterRouter)
+    app.use(LoginRouter)
 
 
     //error handler
