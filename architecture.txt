@@ -1,0 +1,13 @@
+/register
+    input:
+        1. Name
+        2. Surname
+        3. Username
+        4. email
+        5. phone number
+        6. password
+        7. location
+    output:
+        token:
+            1. id
+            
