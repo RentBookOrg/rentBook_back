@@ -131,6 +131,10 @@ export default async function({ sequelize }) {
                     msg: 'book status may be either good, new or bad'
                 }
             }
+        },
+        book_available: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     }, {
         tableName: 'books',
