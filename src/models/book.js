@@ -97,6 +97,40 @@ export default async function({ sequelize }) {
                     msg: 'maximum prize should not be more than 1000000 sum'
                 }
             }
+        },
+        book_language: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                isIn: {
+                    args: [['Uzbek', 'English', 'Russian']],
+                    msg: 'Book language should be either Uzbek, English or Russian'
+                }
+            }
+        },
+        book_count: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            validate: {
+                min: {
+                    args: 1,
+                    msg: 'minimum count of the book should be at least 1'
+                },
+                max: {
+                    args: 50,
+                    msg: 'maximum count of the book should be at most 50'
+                }
+            }
+        },
+        book_status: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                isIn: {
+                    args: [['Good', 'New', 'Bad']],
+                    msg: 'book status may be either good, new or bad'
+                }
+            }
         }
     }, {
         tableName: 'books',

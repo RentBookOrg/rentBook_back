@@ -44,14 +44,9 @@ const BookSchema = Joi.object({
                     .max(256)
                     .required(),
     book_category: Joi.string()
-                    .valid(Joi.in(["Fiction", "Non-Fiction", "Novel", "Romance", "Self-Help Books", "Children’s Books", 
-                    "Biography", "Autobiography", "Text-books", "Political Books", "Academic Books", "Mystery",
-                    "Thrillers", "Poetry Books", "Spiritual Books", "Cook Books", "Art Books", "Young Adult Books",
-                    "Board Books", "History Books"]))
                     .required(),
     book_mode: Joi.string()
-                    .valid(Joi.in(['rent', 'sell']))
-                    .required(),
+                .required(),
     book_page: Joi.number()
                     .min(6)
                     .max(1000)
@@ -67,7 +62,17 @@ const BookSchema = Joi.object({
     book_rent_prize: Joi.number()
                     .min(1000)
                     .max(1000000)
+                    .required(),
+    book_language: Joi.string()
+                    .required(),
+    book_count: Joi.number()
+                    .min(1)
+                    .max(50)
+                    .required(),
+    book_status: Joi.string()
                     .required()
+    
+    
 
 })
 
