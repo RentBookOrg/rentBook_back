@@ -20,7 +20,7 @@
         user_id
 
 POST :
-    /book
+    /book/:user_id
         input:
             1. user_id
             2. book_name
@@ -31,5 +31,6 @@ POST :
             7. book_description
             8. book_prize
             9. rent_prize
+            10. book_available: true(default)
         output:
             book_id
