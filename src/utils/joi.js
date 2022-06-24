@@ -29,12 +29,6 @@ const RegSchema = Joi.object({
 })
 
 const BookSchema = Joi.object({
-    user_id: Joi.string().guid({
-        version: [
-            'uuidv4',
-            'uuidv5'
-        ]
-    }).required(),
     book_name: Joi.string()
             .min(2)
             .max(256)
