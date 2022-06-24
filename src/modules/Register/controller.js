@@ -36,9 +36,9 @@ const VERIFY = async (req, res, next) => {
         }
 
         // token parse
-        const { user_id } = jwt.verify(req.params.token)
+        const user_data = jwt.verify(req.params.token)
 
-        if(user_id != user.user_id) {
+        if(user_data.user_id != user.user_id) {
             next(new ValidationError(400, 'token is not matched with original one'))
         }
 
@@ -49,12 +49,44 @@ const VERIFY = async (req, res, next) => {
         res.status(200)
             .json({ message: 'Email verified successfully', status: 200 })
     } catch (e) {
+        if(e.message == 'invalid token') {
+            next(new ValidationError(400, "invalid token, please request resend email verification"))
+            return
+        }
         next(new InternalServerError(500, e.message))
     }
 }
 
+const RESEND_EMAIL = async (req, res, next) => {
+   try {
+        // get user from db
+        const user = await req.models.User.findOne({ where: { user_id: req.params.user_id } })
+
+        // check the user
+        if(!user) {
+            next(new NotFoundError(404, "The user is not fount"))
+            return
+        }
+
+        // is user verified
+        if(user.user_verified) {
+            next(new ValidationError(400, "The user is already verified"))
+            return
+        }
+
+        // create token
+        const token = jwt.sign({user_id: user.user_id})
+            
+        // send verification email to the user
+        await sendMail(user.user_id, token, user.user_email)
+   } catch (error) {
+       next(new InternalServerError(500, error.message))
+   }
+
+}
 
 export default {
     POST,
-    VERIFY
+    VERIFY,
+    RESEND_EMAIL
 }
