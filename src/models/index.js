@@ -11,6 +11,6 @@ export default async function({ sequelize }) {
         Model({ sequelize })
     }
 
-    // const { default: Model } = await import(path.join(path.resolve(), 'src', 'models', 'relations.js'))
-    // Model({ sequelize })
+    const { default: Model } = await import(path.join(path.resolve(), 'src', 'models', 'relations.js'))
+    Model({ sequelize })
 }
