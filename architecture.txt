@@ -10,4 +10,26 @@
     output:
         token:
             1. id
-            
+
+/login
+    input:
+        1. Username
+        2. Email
+        3. Password
+    output: 
+        user_id
+
+POST :
+    /book
+        input:
+            1. user_id
+            2. book_name
+            3. book_author
+            4. book_category
+            5. book_mode: rent/sell
+            6. book_page
+            7. book_description
+            8. book_prize
+            9. rent_prize
+        output:
+            book_id

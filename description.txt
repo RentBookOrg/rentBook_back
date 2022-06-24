@@ -34,3 +34,9 @@ to notice the action)
 
 2-step
     LOGIN
+
+3-step
+    POST BOOKS
+After successfully registering and verifing the email, the user will be able to post his/her book by filling the
+form. First thing is to know is that the book is for what (renting or selling which will be needed later 
+for filter to get rent books or vise verse)
