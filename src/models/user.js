@@ -17,7 +17,7 @@ export default async function({ sequelize }) {
             validate: {
                 len: {
                     args: [2, 50],
-                    msg: 'username length should be between 2 and 50'
+                    msg: 'username length should be between 2 and 50 characters'
                 }
             }
         },
@@ -27,7 +27,7 @@ export default async function({ sequelize }) {
             validate: {
                 len: {
                     args: [2, 50],
-                    msg: 'username length should be between 2 and 50'
+                    msg: 'username length should be between 2 and 50 characters'
                 }
             }
         },
@@ -42,7 +42,7 @@ export default async function({ sequelize }) {
             validate: {
                 len: {
                     args: [8, 16],
-                    msg: 'password length should be between 8 and 16'
+                    msg: 'password length should be between 8 and 16 characters'
                 }
             }
         },  
@@ -62,15 +62,6 @@ export default async function({ sequelize }) {
             unique: true,
             validate: {
                 isEmail: true
-            }
-        },
-        user_location: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                isIn: [['Toshkent', 'Andijon', 'Samarqand', "Farg'ona", 'Buxoro', 'Jizzax', 'Navoiy', 'Namangan', 'Qashqadaryo', 'Xorazm', 'Sirdaryo',
-                'Surxandaryo', "Qoraqalpog'iston"
-                ]]
             }
         },
         user_verified: {

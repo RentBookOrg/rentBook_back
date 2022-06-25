@@ -29,16 +29,6 @@ export default async function({ sequelize }) {
                 }
             }
         },
-        book_category: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                isIn: [["Fiction", "Non-Fiction", "Novel", "Romance", "Self-Help Books", "Children’s Books", 
-                    "Biography", "Autobiography", "Text-books", "Political Books", "Academic Books", "Mystery",
-                    "Thrillers", "Poetry Books", "Spiritual Books", "Cook Books", "Art Books", "Young Adult Books",
-                    "Board Books", "History Books"]]
-            }
-        },
         book_mode: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -135,6 +125,10 @@ export default async function({ sequelize }) {
         book_available: {
             type: DataTypes.BOOLEAN,
             defaultValue: true
+        },
+        book_picture: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     }, {
         tableName: 'books',
