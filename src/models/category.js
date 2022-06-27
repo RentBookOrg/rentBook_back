@@ -25,7 +25,9 @@ export default async function({ sequelize }) {
         modelName: 'Category',
         updatedAt: 'category_updated_at',
         createdAt: 'category_created_at',
+        deletedAt: 'category_deleted_at',
         underscored: true,
+        paranoid: true,
         sequelize
     })
 }

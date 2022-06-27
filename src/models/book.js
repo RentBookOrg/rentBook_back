@@ -135,7 +135,9 @@ export default async function({ sequelize }) {
         modelName: 'Book',
         updatedAt: 'book_updated_at',
         createdAt: 'book_created_at',
+        deletedAt: 'book_deleted_at',
         underscored: true,
+        paranoid: true,
         sequelize,
     })
 }

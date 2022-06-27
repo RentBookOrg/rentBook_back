@@ -25,7 +25,9 @@ export default async function({ sequelize }) {
         modelName: 'Location',
         updatedAt: 'location_updated_at',
         createdAt: 'location_created_at',
+        deletedAt: 'location_deleted_at',
         underscored: true,
+        paranoid: true,
         sequelize
     })
 }

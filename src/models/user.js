@@ -73,7 +73,9 @@ export default async function({ sequelize }) {
         modelName: 'User',
         updatedAt: 'user_updated_at',
         createdAt: 'user_created_at',
+        deletedAt: 'user_deleted_at',
         underscored: true,
+        paranoid: true,
         sequelize,
         hooks: {
             beforeCreate: async (user) => {
