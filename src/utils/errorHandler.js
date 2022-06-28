@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs'
+import { appendFileSync } from 'fs'
 import { join } from 'path'
 
 export default async function (error, req, res, next) {
@@ -7,9 +7,9 @@ export default async function (error, req, res, next) {
         return
     }
 
-    const data = `${Date.now()}__${req.url}__${req.method}__${error.name}__${error.message}`
+    const data = `${Date.now()}__${req.url}__${req.method}__${error.name}__${error.message}\n`
     console.log(data)
-    writeFileSync(join(process.cwd(), 'logger.txt'), data)
+    appendFileSync(join(process.cwd(), 'logger.txt'), data)
 
     res.status(500).json({ status: 500, name: 'InternalServerError', message: 'Internal Server Error', data: null })
 }

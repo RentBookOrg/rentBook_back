@@ -22,7 +22,7 @@ const RegSchema = Joi.object({
         user_email: Joi.string()
             .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
             .required(),
-        user_location: Joi.string()
+        location_id: Joi.string()
             .required(),
         password: Joi.string()
                 .pattern(new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/))
@@ -36,8 +36,6 @@ const BookSchema = Joi.object({
     book_author: Joi.string()
                     .min(2)
                     .max(256)
-                    .required(),
-    book_category: Joi.string()
                     .required(),
     book_mode: Joi.string()
                 .required(),
@@ -64,10 +62,9 @@ const BookSchema = Joi.object({
                     .max(50)
                     .required(),
     book_status: Joi.string()
+                    .required(),
+    category_id: Joi.string()
                     .required()
-    
-    
-
 })
 
 export default {
@@ -75,6 +72,10 @@ export default {
         return RegSchema.validate(data)
     },
     bookPost: data => {
-        return BookSchema.validate(data)
+        try {
+            return BookSchema.validate(data)
+        } catch (error) {
+            return error
+        }
     }
 }
