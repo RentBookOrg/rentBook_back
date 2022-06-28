@@ -19,7 +19,6 @@ export default async function(id, token, email) {
       })
 
     } catch (e) {
-      console.log(1)
       throw new Error(e.message)
     }
 

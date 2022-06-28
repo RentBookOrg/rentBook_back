@@ -5,14 +5,30 @@ import { NotFoundError, ValidationError, InternalServerError } from '#error'
 
 const POST = async (req, res, next) => {
     try {
+        // validation
         const {error, value} = joi.register(req.body)
-    
+        
         if(error) {
+            console.log(11)
             next(new ValidationError(400, error.message))
             return
         }
+
+        const user = await req.models.User.findOne({ where: { user_email: value.user_email } })
+        if(user) {
+            next(new ValidationError(400, "This user is already registered, please log in"))
+            return
+        }
         // insert data to database
-        const newUser = await req.models.User.create( value )
+        const newUser = await req.models.User.create( {
+            name: value.name,
+            surname: value.surname,
+            username: value.username,
+            password: value.password,
+            user_contact: value.user_contact,
+            user_email: value.user_email,
+            location_id: value.location_id
+        } )
 
         // create token
         const token = jwt.sign({user_id: newUser.user_id})
@@ -20,7 +36,8 @@ const POST = async (req, res, next) => {
         // send verification email to the user
         await sendMail(newUser.user_id, token, newUser.user_email)
 
-        res.status(200).json({ message: 'please verify your email', token, status: 200 })
+        res.status(200)
+            .json({ message: 'please verify your email', token, status: 200, user_id: newUser.user_id })
   
     } catch (error) {
         next(new InternalServerError(500, error.message) )
@@ -79,6 +96,9 @@ const RESEND_EMAIL = async (req, res, next) => {
             
         // send verification email to the user
         await sendMail(user.user_id, token, user.user_email)
+
+        res.status(200)
+            .json({ status: 200, message: 'Verification email is sent', token, user_id: user.user_id })
    } catch (error) {
        next(new InternalServerError(500, error.message))
    }
