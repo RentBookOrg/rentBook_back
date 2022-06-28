@@ -1,4 +1,5 @@
 import express from "express"
+import { join } from 'path'
 import './conf.js'
 import dbConnection from './utils/db.js'
 import { RegisterRouter, LoginRouter, BookRouter } from "./modules/index.js"
@@ -16,6 +17,7 @@ import fileUpload from 'express-fileupload'
     // middleware
     app.use(express.json())
     app.use(fileUpload())
+    app.use(express.static(join(process.cwd(), 'src', 'images')))
     app.use((req, res, next) => {
         req.models = sequelize.models
         req.sequelize = sequelize
