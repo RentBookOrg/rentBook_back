@@ -1,10 +1,11 @@
 import express from "express"
 import './conf.js'
 import dbConnection from './utils/db.js'
-import { RegisterRouter, LoginRouter } from "./modules/index.js"
+import { RegisterRouter, LoginRouter, BookRouter } from "./modules/index.js"
 import errorHandler from "#errorHandler"
 import Category from './data/category.js'
 import Location from './data/location.js'
+import fileUpload from 'express-fileupload'
 
 !async function() {
     const app = express()
@@ -12,16 +13,18 @@ import Location from './data/location.js'
     await Category({ sequelize })
     await Location({ sequelize })
 
+    // middleware
     app.use(express.json())
+    app.use(fileUpload())
     app.use((req, res, next) => {
         req.models = sequelize.models
+        req.sequelize = sequelize
         next()
     })
-
     // routers
     app.use(RegisterRouter)
     app.use(LoginRouter)
-
+    app.use(BookRouter)
 
     //error handler
     app.use(errorHandler)
