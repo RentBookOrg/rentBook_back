@@ -32,6 +32,9 @@ Token is stored on runtime variable. If the user close the tab token is cleaned 
 to notice the action)
 
 
+BUG: while inserting data to database if some values are invalid thrown error can not be handle to 
+show the user. They are handled as an internal server error. Gotta fix it
+
 2-step
     LOGIN
 
@@ -40,3 +43,6 @@ to notice the action)
 After successfully registering and verifing the email, the user will be able to post his/her book by filling the
 form. First thing is to know is that the book is for what (renting or selling which will be needed later 
 for filter to get rent books or vise verse)
+
+    !!IMPORTANT:
+        Next realease restore deleted books feature will be implemented
