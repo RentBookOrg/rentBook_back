@@ -1,1 +1,5 @@
-1656081657913__/4b40c9fa-83b0-495c-9d63-ee74e2044a1e/verify/yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNGI0MGM5ZmEtODNiMC00OTVjLTlkNjMtZWU3NGUyMDQ0YTFlIiwiaWF0IjoxNjU2MDgxNjI4LCJleHAiOjE2NTYwODUyMjh9.zvalRAhCdTkB4zoQWzI48TLSiBtXHRUx69RNDdAA8CQ__GET__InternalServerError__invalid token
+1656397624389__/register__POST__InternalServerError__insert or update on table "users" violates foreign key constraint "users_location_id_fkey"
+1656397738296__/register__POST__InternalServerError__insert or update on table "users" violates foreign key constraint "users_location_id_fkey"
+1656397766403__/register__POST__InternalServerError__insert or update on table "users" violates foreign key constraint "users_location_id_fkey"
+1656398637182__/book/user?userId=123131231313__GET__InternalServerError__invalid input syntax for type uuid: "123131231313"
+1656398662076__/book/user?userid=123131231313__GET__InternalServerError__WHERE parameter "user_id" has invalid "undefined" value
