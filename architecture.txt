@@ -34,3 +34,15 @@ POST :
             10. book_available: true(default)
         output:
             book_id
+
+Orders:
+    /order/:book_id/:mode(rent/buy)
+        input:
+            1. Name
+            2. Surname
+            3. Email
+            4. Address
+            5. Phone number
+            6. returning date(if mode is rent)
+        output:
+            1. order_id  (if any complaints, to use this id which is sent to email)

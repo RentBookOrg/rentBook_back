@@ -46,3 +46,45 @@ for filter to get rent books or vise verse)
 
     !!IMPORTANT:
         Next realease restore deleted books feature will be implemented
+
+    GETTING Book:
+        1. for the main page books are fetched by location id
+        2. for the personal cabinet books are fetched by user id
+    
+    DELETE Book:
+        1. book is deleted by book id
+
+4-step
+    Orders
+If someone wants to get a book, the main task is to check the availability of the book. Getter 
+can get the book when the book is available. Getter should say the type of the goal(rent/buy)
+    1. If the goal is to buy, fill the form to send to the owner. When the owner is approved 
+    the request, that book's availability will be removed(make it unavailable to all) and remove that 
+    book.
+    2. If the goal is to rent, getter should fill the form to send to the owner. It is also the similar
+    to buying the book, but the getter should say returning date. So, that book will be unavailable 
+    untill that returning  date(doing this by timeout methods)
+    
+    !!!! If the book is got as a rent, that book will be blur and at the bottom of that book will be 
+    warting to say when that book would be available again.
+
+
+    Problems:
+        If the request is sent, but the owner reject the order what should be done?
+        If the owner approve but dont send the book to a person?
+        if the owner send the book that person, but person would not send the book back?
+        if the getter send the book back to the owner, but the owner compliant (not get the book)?
+    Solution:
+        1. Should make contract with the post office. when the user or the owner send the book, 
+        post office officer will be responsible to get the book from those and will fill form
+        about recieving the book. So noone will cheat each other.
+
+        2. If the users' data should be kept secret, call-center should be orginized, to get
+        compliants and make contact with the owner or the getter to solve the issue
+
+        !IMPORTANT! ----> This feature will be available next realeses according to the number of 
+        web site users
+
+    !! VALIDATION !!
+        getter may enter wrong or not working phone number. at next release sending specific 
+        verifying code to the number to know the phone number is valid or not.
