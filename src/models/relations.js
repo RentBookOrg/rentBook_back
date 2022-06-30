@@ -6,6 +6,7 @@ export default async function({ sequelize }) {
     const Book = sequelize.models.Book
     const Category = sequelize.models.Category
     const Location = sequelize.models.Location
+    const Order = sequelize.models.Order
 
     Location.hasOne(User, {
         foreignKey: {
@@ -26,6 +27,14 @@ export default async function({ sequelize }) {
     User.hasMany(Book, {
         foreignKey: {
             name: "user_id",
+            type: DataTypes.UUID,
+            allawNull: false
+        }
+    })
+
+    Book.hasMany(Order, {
+        foreignKey: {
+            name: "book_id",
             type: DataTypes.UUID,
             allawNull: false
         }
