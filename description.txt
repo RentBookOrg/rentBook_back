@@ -66,7 +66,7 @@ can get the book when the book is available. Getter should say the type of the g
     untill that returning  date(doing this by timeout methods)
     
     !!!! If the book is got as a rent, that book will be blur and at the bottom of that book will be 
-    warting to say when that book would be available again.
+    warning to say when that book would be available again.
 
 
     Problems:
@@ -88,3 +88,14 @@ can get the book when the book is available. Getter should say the type of the g
     !! VALIDATION !!
         getter may enter wrong or not working phone number. at next release sending specific 
         verifying code to the number to know the phone number is valid or not.
+
+
+Filling the form successfully, getter will see the notice that u will be sent an email when your 
+order is approved by the owner of the book. And the owner will get the email about the order with the 
+full info and on site in the personal cabinet user will see that order with "pending" status.
+When the user approve the order buyer will get the email about approved order with the seller phone number
+to get in touch.
+
+If the user rent a book, on book returning day, user will get email about returning the book and 
+at the owner's personal cabinet, owner will see "div" where confirmation button will be placed
+to confirm to get the book back. If the owner get the book, book's availability will be restored again
