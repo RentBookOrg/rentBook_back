@@ -67,6 +67,34 @@ const BookSchema = Joi.object({
                     .required()
 })
 
+const OrderSchema = Joi.object({
+    name: Joi.string()
+            .pattern(new RegExp('^[a-zA-Z]*$'))
+            .min(2)
+            .max(256)
+            .required(),
+    surname: Joi.string()
+                .pattern(new RegExp('^[a-zA-Z]*$'))
+                .min(3)
+                .max(256)
+                .required(),
+    phone: Joi.string()
+                .pattern(new RegExp('^998[389][012345789][0-9]{7}$'))
+                .required(),
+    email: Joi.string()
+                .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+                .required(),
+    order_mode: Joi.string()
+                    .max(4)
+                    .required(),
+    address: Joi.string()
+                .max(256)
+                .required(),
+    order_returning_date: Joi.string()
+                            .date(),
+})
+
+
 export default {
     register: data => {
         return RegSchema.validate(data)
@@ -77,5 +105,6 @@ export default {
         } catch (error) {
             return error
         }
-    }
+    },
+    order: data => OrderSchema.validate(data)
 }
