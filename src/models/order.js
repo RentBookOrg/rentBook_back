@@ -9,7 +9,7 @@ export default async function({ sequelize }) {
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
-        getter_name: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
@@ -19,7 +19,7 @@ export default async function({ sequelize }) {
                 }
             }
         }, 
-        getter_surname: {
+        surname: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
@@ -29,7 +29,7 @@ export default async function({ sequelize }) {
                 }
             }
         },
-        getter_phone: {
+        phone: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
@@ -39,7 +39,7 @@ export default async function({ sequelize }) {
                 }
             }
         },
-        getter_email: {
+        email: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
@@ -57,7 +57,7 @@ export default async function({ sequelize }) {
                 }
             }
         },
-        getter_address: {
+        address: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
@@ -69,7 +69,6 @@ export default async function({ sequelize }) {
         },
         order_returning_date: {
             type: DataTypes.DATE,
-            allowNull: false,
             validate: {
                 customValidator(value) {
                     if (value && new Date(value) < new Date()) {
@@ -77,6 +76,10 @@ export default async function({ sequelize }) {
                     }
                 }
             }
+        },
+        order_approved: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     }, {
         tableName: 'orders',
