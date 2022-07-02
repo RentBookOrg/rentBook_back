@@ -124,15 +124,22 @@ const APPROVE_RENT = async (req, res, next) => {
         await order.save()
         // create overall data to send
         let data = {
-            owner_phone: order.user_contact,
-            owner: order.name,
-            owner_email: order.user_email,
+            order_id: order.order_id,
             book_id: order.book_id,
             book_name: order.book_name,
-            order_id: order.order_id
+            owner: order.name,
+            owner_phone: order.user_contact,
+            owner_email: order.user_email,
+            order_returning_date: order.order_returning_date
         }
         await sendEmail(data, "Your order is approved by the owner", order.email, 'approve')
+        // send notification after specific time
+        let returningTime = new Date(order.order_returning_date).getTime()
+        setTimeout(() => {
+            await sendEmail(data, "It is time to send the book back to the owner", order.email, 'return')
+        }, returningTime)
 
+        res.status(200).json({ status: 200, message: "Order is approved", order_id: order.order_id })
     } catch (error) {
         next(new InternalServerError(500, error.message))
     }
@@ -186,7 +193,8 @@ const APPROVE_BUY = async (req, res, next) => {
     // save updated info
     await order.save()
     await book.save()
-
+    await order.destroy()
+    
     const user = await req.models.User.findOne({ where: { user_id: book.user_id } })
 
     let data = {
@@ -220,10 +228,37 @@ const REJECT_BUY = async (req, res, next) => {
     res.status(400).json({ status: 400, message: "Order is rejected", order_id: order.order_id })
 }
 
+const RESTORE_BOOK = async (req, res, next) => {
+    try {
+        // get book from db
+        const order = await req.models.Order.findOne({ where: { order_id: req.params.order_id } })
+        // validation
+        if(!order) {
+            next(new NotFoundError(404, "The book is not fount"))
+            return
+        }
+        const book = await req.models.Book.findOne({ where: { book_id: order.book_id } })
+
+        // update book count and availability
+        book.book_count += 1
+        if(!(book.book_available)) {
+            book.book_available = true
+        }
+        // save update
+        await book.save()
+        await order.destroy()
+
+        res.status(200).json({ status: 200, message: "Book info is updated", data: book })
+    } catch (error) {
+        next(new InternalServerError(500, error.message))
+    }
+}
+
 export default {
     GET_ORDER,
     APPROVE_RENT,
     REJECT_RENT,
     APPROVE_BUY,
-    REJECT_BUY
+    REJECT_BUY,
+    RESTORE_BOOK,
 }

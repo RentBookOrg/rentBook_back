@@ -32,6 +32,15 @@ export default async function(data, message, email, type) {
         })
       } 
 
+      if(type == 'return') {
+        let info = await transporter.sendMail({
+          from: "umid09tuxtayev@gmail.com",
+          to: email,
+          subject: "Returning order notification",
+          text: `${message}, \n User info: ${data}`,
+          })
+      } 
+
       if(type == 'approve' || type == 'reject') {
         let info = await transporter.sendMail({
           from: "umid09tuxtayev@gmail.com",
