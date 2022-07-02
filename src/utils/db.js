@@ -20,7 +20,7 @@ export default async function () {
         console.log('models are loaded!')
 
         // sync
-        await sequelize.sync({ force: true })
+        await sequelize.sync({ alter: true })
         console.log('models are syncronized!')
 
         return sequelize
