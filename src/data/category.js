@@ -7,7 +7,10 @@ const categories = ["Fiction", "Non-Fiction", "Novel", "Romance", "Self-Help Boo
 export default async function({ sequelize }) {
     const Category = sequelize.models.Category
 
-    for(let el of categories) {
-        await Category.create({ category_name: el })
+    const category = await Category.findOne({  })
+    if(!category) {
+        for(let el of categories) {
+            await Category.create({ category_name: el })
+        }
     }
 }

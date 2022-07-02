@@ -5,7 +5,10 @@ const locations = ['Toshkent', 'Andijon', 'Samarqand', "Farg'ona", 'Buxoro', 'Ji
 export default async function({ sequelize }) {
     const Location = sequelize.models.Location
 
-    for(let el of locations) {
-        await Location.create({ location_name: el })
+    const location = await Location.findOne({  })
+    if(!location) {
+        for(let el of locations) {
+            await Location.create({ location_name: el })
+        }
     }
 }
