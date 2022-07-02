@@ -90,8 +90,7 @@ const OrderSchema = Joi.object({
     address: Joi.string()
                 .max(256)
                 .required(),
-    order_returning_date: Joi.string()
-                            .date(),
+    order_returning_date: Joi.date(),
 })
 
 
