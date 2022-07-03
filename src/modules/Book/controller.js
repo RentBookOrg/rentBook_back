@@ -16,7 +16,6 @@ const POST = async (req, res, next) => {
             next(new ValidationError(400, "Please, verify your email first!"))
             return
         }
-        console.log(req.body)
         
         const { error, value } = Joi.bookPost(req.body)
 
@@ -37,23 +36,28 @@ const POST = async (req, res, next) => {
         }
         // change the name of book
         req.files.file.name = `${Date.now()}${req.files.file.name}`
-        console.log(req.body)
-        const book = await req.models.Book.create({
-            book_name: req.body.book_name,
-            book_author: req.body.book_author,
-            category_id: req.body.category_id,
-            book_mode: req.body.book_mode,
-            book_page: req.body.book_page,
-            book_description: req.body.book_description,
-            book_prize: req.body.book_prize,  
-            book_rent_prize: req.body.book_rent_prize,
-            book_language: req.body.book_language,
-            book_count: req.body.book_count,
-            book_status: req.body.book_status,
-            book_picture: req.files.file.name,
-            user_id: req.params.user_id
-        })
 
+        try {
+            const book = await req.models.Book.create({
+                book_name: req.body.book_name,
+                book_author: req.body.book_author,
+                category_id: req.body.category_id,
+                book_mode: req.body.book_mode,
+                book_page: req.body.book_page,
+                book_description: req.body.book_description,
+                book_prize: req.body.book_prize,  
+                book_rent_prize: req.body.book_rent_prize,
+                book_language: req.body.book_language,
+                book_count: req.body.book_count,
+                book_status: req.body.book_status,
+                book_picture: req.files.file.name,
+                user_id: req.params.user_id
+            })
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return
+        }
+        
         req.files.file.mv(join(process.cwd(), 'src', 'images', req.files.file.name))
 
         res.status(200).json({ status: 200, message: 'book successfully added', book_id: book.book_id })
