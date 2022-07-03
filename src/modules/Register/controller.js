@@ -20,15 +20,20 @@ const POST = async (req, res, next) => {
             return
         }
         // insert data to database
-        const newUser = await req.models.User.create( {
-            name: value.name,
-            surname: value.surname,
-            username: value.username,
-            password: value.password,
-            user_contact: value.user_contact,
-            user_email: value.user_email,
-            location_id: value.location_id
-        } )
+        try {
+            const newUser = await req.models.User.create( {
+                name: value.name,
+                surname: value.surname,
+                username: value.username,
+                password: value.password,
+                user_contact: value.user_contact,
+                user_email: value.user_email,
+                location_id: value.location_id
+            } )
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return
+        }
 
         // create token
         const token = jwt.sign({user_id: newUser.user_id})
