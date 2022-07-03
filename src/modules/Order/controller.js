@@ -133,6 +133,7 @@ const APPROVE_RENT = async (req, res, next) => {
             order_returning_date: order.order_returning_date
         }
         await sendEmail(data, "Your order is approved by the owner", order.email, 'approve')
+        
         // send notification after specific time
         let returningTime = new Date(order.order_returning_date).getTime()
         setTimeout(async () => {
