@@ -2,7 +2,8 @@ import express from "express"
 import { join } from 'path'
 import './conf.js'
 import dbConnection from './utils/db.js'
-import { RegisterRouter, LoginRouter, BookRouter, OrderRouter, LocationRouter } from "./modules/index.js"
+import { RegisterRouter, LoginRouter, BookRouter, OrderRouter, LocationRouter, 
+CategoryRouter } from "./modules/index.js"
 import errorHandler from "#errorHandler"
 import Category from './data/category.js'
 import Location from './data/location.js'
@@ -25,6 +26,7 @@ import fileUpload from 'express-fileupload'
     })
     // routers
     app.use(LocationRouter)
+    app.use(CategoryRouter)
     app.use(RegisterRouter)
     app.use(LoginRouter)
     app.use(BookRouter)
