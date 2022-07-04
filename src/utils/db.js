@@ -6,6 +6,7 @@ const sequelize = new Sequelize({
     host: process.env.HOST,
     username: process.env.USERNAME,
     database: process.env.DATABASE,
+    password: process.env.DB_PASS,
     logging: false
 })
 
