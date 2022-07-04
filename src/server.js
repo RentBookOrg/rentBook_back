@@ -8,6 +8,7 @@ import errorHandler from "#errorHandler"
 import Category from './data/category.js'
 import Location from './data/location.js'
 import fileUpload from 'express-fileupload'
+import cors from 'cors'
 
 !async function() {
     const app = express()
@@ -18,6 +19,7 @@ import fileUpload from 'express-fileupload'
     // middleware
     app.use(express.json())
     app.use(fileUpload())
+    app.use(cors())
     app.use(express.static(join(process.cwd(), 'src', 'images')))
     app.use((req, res, next) => {
         req.models = sequelize.models
