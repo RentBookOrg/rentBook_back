@@ -103,7 +103,7 @@ const GET_BY_LOCATION = async (req, res, next) => {
                 return
             }
             // output books from all locations
-            res.status(200).json({ status: 200, message: "Currently books are not available in your area. Please, check other areas books" })
+            res.status(200).json({ status: 200, message: "Currently books are not available in your area. Please, check other areas books", data: books })
             return
         }
         // books from specific location
