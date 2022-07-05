@@ -9,7 +9,6 @@ const POST = async (req, res, next) => {
         const {error, value} = joi.register(req.body)
         
         if(error) {
-            console.log(11)
             next(new ValidationError(400, error.message))
             return
         }
