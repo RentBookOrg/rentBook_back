@@ -8,7 +8,6 @@ export default async function (error, req, res, next) {
     }
 
     const data = `${Date.now()}__${req.url}__${req.method}__${error.name}__${error.message}\n`
-    console.log(data)
     appendFileSync(join(process.cwd(), 'logger.txt'), data)
 
     res.status(500).json({ status: 500, name: 'InternalServerError', message: 'Internal Server Error', data: null })
