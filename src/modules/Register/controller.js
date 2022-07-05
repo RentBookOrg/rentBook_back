@@ -20,8 +20,9 @@ const POST = async (req, res, next) => {
             return
         }
         // insert data to database
+        let newUser = undefined
         try {
-            const newUser = await req.models.User.create( {
+            newUser = await req.models.User.create( {
                 name: value.name,
                 surname: value.surname,
                 username: value.username,
