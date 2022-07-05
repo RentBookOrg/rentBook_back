@@ -92,7 +92,7 @@ const DELETE = async (req, res, next) => {
 const GET_BY_LOCATION = async (req, res, next) => {
     try {
         // get book from location id
-        const bookByLocation = await req.sequelize.query(`SELECT b.* FROM books AS b INNER JOIN users AS u ON u.user_id = b.user_id INNER JOIN locations AS l ON l.location_id = '${req.query.location_id}'`)
+        let bookByLocation = await req.sequelize.query(`SELECT b.* FROM books AS b INNER JOIN users AS u ON u.user_id = b.user_id INNER JOIN locations AS l ON l.location_id = '${req.query.location_id}'`)
         // check whether books are available
         if(!bookByLocation) {
             // if not available get all books from all locations
