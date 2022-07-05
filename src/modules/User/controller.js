@@ -1,8 +1,15 @@
-import { NotFoundError, InternalServerError } from '#error'
+import { NotFoundError, InternalServerError, ValidationError } from '#error'
 const GET = async (req, res, next) => {
     try {
-        const user = await req.models.User.findOne({ where: { user_id: req.query.user_id } })
-
+        let user = undefined
+        try {
+            user = await req.models.User.findOne({ where: { user_id: req.query.user_id }, 
+                attributes: ['user_id', 'name', 'username', 'user_email', 'user_verified'] })
+    
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+        }
+        
         if(!user) {
             next(new NotFoundError(404, "The user is not fount"))
             return
