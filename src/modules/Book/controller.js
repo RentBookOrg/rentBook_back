@@ -5,7 +5,13 @@ import { join } from 'path'
 const POST = async (req, res, next) => {
     try {
         //get user from db
-        const user = await req.models.User.findOne({ where: { user_id: req.params.user_id } })
+        let user = undefined
+        try{
+            user = await req.models.User.findOne({ where: { user_id: req.params.user_id } })
+        } catch(error){
+            next(new ValidationError(400, error.message))
+            return
+        }
         // does user exist
         if(!user) {
             next(new NotFoundError(404, "The user is not found"))
@@ -21,7 +27,7 @@ const POST = async (req, res, next) => {
 
         // validation
         if(error) {
-            next(new ValidationError(error.message))
+            next(new ValidationError(400, error.message))
             return
         }
 
@@ -36,9 +42,9 @@ const POST = async (req, res, next) => {
         }
         // change the name of book
         req.files.file.name = `${Date.now()}${req.files.file.name}`
-
+        let book = undefined
         try {
-            const book = await req.models.Book.create({
+            book = await req.models.Book.create({
                 book_name: req.body.book_name,
                 book_author: req.body.book_author,
                 category_id: req.body.category_id,
@@ -70,7 +76,13 @@ const POST = async (req, res, next) => {
 const DELETE = async (req, res, next) => {
     try {
         // get book from db
-        const book = await req.models.Book.findOne({ where: { book_id: req.params.book_id, user_id: req.params.user_id } })
+        let book = undefined
+        try {
+            book = await req.models.Book.findOne({ where: { book_id: req.params.book_id, user_id: req.params.user_id } })
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return            
+        }
         //validation
         if(!book) {
             next(new NotFoundError(404, "The book is not fount"))
@@ -92,14 +104,20 @@ const DELETE = async (req, res, next) => {
 const GET_BY_LOCATION = async (req, res, next) => {
     try {
         // get book from location id
-        let bookByLocation = await req.sequelize.query(`SELECT b.* FROM books AS b INNER JOIN users AS u ON u.user_id = b.user_id INNER JOIN locations AS l ON l.location_id = '${req.query.location_id}'`)
+        let bookByLocation = undefined
+        try {
+            bookByLocation = await req.sequelize.query(`SELECT b.* FROM books AS b INNER JOIN users AS u ON u.user_id = b.user_id INNER JOIN locations AS l ON l.location_id = '${req.query.location_id}'`)
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return            
+        }
         // check whether books are available
         if(!bookByLocation) {
             // if not available get all books from all locations
             const books = JSON.parse(JSON.stringify(await req.models.Book.findAll()))
             // if books are available
             if(!books) {
-                res.status(400).json({ status: 400, message: "Currently none of books are available" })
+                res.status(404).json({ status: 404, message: "Currently none of books are available" })
                 return
             }
             // output books from all locations
@@ -119,7 +137,13 @@ const GET_BY_LOCATION = async (req, res, next) => {
 const GET_BY_USER_ID = async (req, res, next) => {
     try {
         // get book from location id
-        const bookByUserId = JSON.parse(JSON.stringify(await req.models.Book.findAll({ where: { user_id: req.query.userId } })))
+        let bookByUserId = undefined
+        try {
+            bookByUserId = JSON.parse(JSON.stringify(await req.models.Book.findAll({ where: { user_id: req.query.userId } })))
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return            
+        }
         
         if(!bookByUserId) {
             next(new NotFoundError(404, "You have not got any books yet"))

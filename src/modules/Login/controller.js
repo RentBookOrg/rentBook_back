@@ -3,8 +3,13 @@ import bcrypt from 'bcrypt'
 
 const LOGIN = async (req, res, next) => {
     try {
-
-        const user = await req.models.User.findOne({ where: { user_email: req.body.email, username: req.body.username } })
+        let user = undefined
+        try {
+            user = await req.models.User.findOne({ where: { user_email: req.body.email, username: req.body.username } })
+        } catch(error) {
+            next(new ValidationError(400, error.message))
+            return
+        }
         
         if(!user) {
             next(new NotFoundError(404, 'such user does not exist!'))

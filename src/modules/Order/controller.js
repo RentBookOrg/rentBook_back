@@ -12,7 +12,13 @@ const GET_ORDER = async (req, res, next) => {
             return
         }
         // get specific book from db
-        const book = await req.models.Book.findOne({ where: { book_id: req.params.book_id } })
+        let book = undefined
+        try {
+            book = await req.models.Book.findOne({ where: { book_id: req.params.book_id } })
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return
+        }
         // validation
         if(!book) {
             next(new NotFoundError(404, "The book is not fount"))
@@ -105,10 +111,15 @@ const GET_ORDER = async (req, res, next) => {
 const APPROVE_RENT = async (req, res, next) => {
     try {
         // get order from db with full info 
-        const order = await req.sequelize.query(`SELECT * FROM orders AS o INNER JOIN books AS b ON b.book_id = '${req.params.book_id}'
-        INNER JOIN users AS u ON u.user_id = b.user_id`)
+        let order = undefined
+        try {
+            order = await req.sequelize.query(`SELECT * FROM orders AS o INNER JOIN books AS b ON b.book_id = '${req.params.book_id}'
+            INNER JOIN users AS u ON u.user_id = b.user_id`)
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return
+        }
 
-        console.log(order)
         // checking
         if(!order) {
             next(new NotFoundError(404, "The order is not fount"))
@@ -148,11 +159,16 @@ const APPROVE_RENT = async (req, res, next) => {
 
 const REJECT_RENT = async (req, res, next) => {
     try {
-        // get order from db with full info 
-        const order = await req.sequelize.query(`SELECT * FROM orders AS o INNER JOIN books AS b ON b.book_id = '${req.params.book_id}'
-        INNER JOIN users AS u ON u.user_id = b.user_id`)
+        // get order from db with full info
+        let order = undefined 
+        try {
+            order = await req.sequelize.query(`SELECT * FROM orders AS o INNER JOIN books AS b ON b.book_id = '${req.params.book_id}'
+            INNER JOIN users AS u ON u.user_id = b.user_id`)
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return            
+        }
 
-        console.log(order)
         // checking
         if(!order) {
             next(new NotFoundError(404, "The order is not fount"))
@@ -176,63 +192,89 @@ const REJECT_RENT = async (req, res, next) => {
 }
 
 const APPROVE_BUY = async (req, res, next) => {
-    const order = await req.models.Order.findOne({ where: { order_id: req.params.order_id } })
+    try {
+        let order = undefined
+        try {
+            order = await req.models.Order.findOne({ where: { order_id: req.params.order_id } })
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return        
+        }
 
-    if(!order) {
-        next(new NotFoundError(404, "The order is not fount"))
-        return
+        if(!order) {
+            next(new NotFoundError(404, "The order is not fount"))
+            return
+        }
+
+        const book = await req.models.Book.findOne({ where: { book_id: order.book_id } })
+
+        // update order info
+        book.book_count = book.book_count <= 0 ? 0 : book.book_count - 1
+        if(book.book_count == 0) {
+            book.book_available = false
+        }
+        order.order_approved = true
+        // save updated info
+        await order.save()
+        await book.save()
+        await order.destroy()
+        
+        const user = await req.models.User.findOne({ where: { user_id: book.user_id } })
+
+        let data = {
+            owner: user.name,
+            owner_contact: user.user_contact,
+            owner_email: user.user_email,
+            book_id: book.book_id,
+            book_name: book.book_name,
+            order_id: order.order_id
+        }
+
+        await sendEmail(data, "You order is approved by the owner", order.email, 'approve')
+
+        res.status(200).json({ status: 200, message: "Approved message is sent", order_id: order.order_id })
+    } catch (error) {
+        next(new InternalServerError(500, error.message))
     }
-
-    const book = await req.models.Book.findOne({ where: { book_id: order.book_id } })
-
-    // update order info
-    book.book_count = book.book_count <= 0 ? 0 : book.book_count - 1
-    if(book.book_count == 0) {
-        book.book_available = false
-    }
-    order.order_approved = true
-    // save updated info
-    await order.save()
-    await book.save()
-    await order.destroy()
-    
-    const user = await req.models.User.findOne({ where: { user_id: book.user_id } })
-
-    let data = {
-        owner: user.name,
-        owner_contact: user.user_contact,
-        owner_email: user.user_email,
-        book_id: book.book_id,
-        book_name: book.book_name,
-        order_id: order.order_id
-    }
-
-    await sendEmail(data, "You order is approved by the owner", order.email, 'approve')
-
-    res.status(200).json({ status: 200, message: "Approved message is sent", order_id: order.order_id })
 }
 
 const REJECT_BUY = async (req, res, next) => {
-    const order = await req.models.Order.findOne({ where: { order_id: req.params.order_id } })
-    // checking
-    if(!order) {
-        next(new NotFoundError(404, "The order is not fount"))
-        return
-    }
-    // get book from db to send book info to the getter
-    const book = await req.models.Book.findOne({ where: { book_id: order.book_id } })
-    // soft delete order from db
-    await order.destroy()
-    // send notification about rejecting the order 
-    await sendEmail({ order_id: order.order_id, book_id: book.book_id, book_name: book.book_name }, "Your order is rejected by the owner", order.email, 'reject')
+    try {
+        let order = undefined
+        try {
+            order = await req.models.Order.findOne({ where: { order_id: req.params.order_id } })
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return            
+        }
+        // checking
+        if(!order) {
+            next(new NotFoundError(404, "The order is not fount"))
+            return
+        }
+        // get book from db to send book info to the getter
+        const book = await req.models.Book.findOne({ where: { book_id: order.book_id } })
+        // soft delete order from db
+        await order.destroy()
+        // send notification about rejecting the order 
+        await sendEmail({ order_id: order.order_id, book_id: book.book_id, book_name: book.book_name }, "Your order is rejected by the owner", order.email, 'reject')
 
-    res.status(400).json({ status: 400, message: "Order is rejected", order_id: order.order_id })
+        res.status(400).json({ status: 400, message: "Order is rejected", order_id: order.order_id })
+    } catch (error) {
+        next(new InternalServerError(500, error.message))
+    }
 }
 
 const RESTORE_BOOK = async (req, res, next) => {
     try {
         // get book from db
-        const order = await req.models.Order.findOne({ where: { order_id: req.params.order_id } })
+        let order = undefined
+        try {
+            order = await req.models.Order.findOne({ where: { order_id: req.params.order_id } })
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return
+        }
         // validation
         if(!order) {
             next(new NotFoundError(404, "The book is not fount"))

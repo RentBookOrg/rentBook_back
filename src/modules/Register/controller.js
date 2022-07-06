@@ -13,7 +13,14 @@ const POST = async (req, res, next) => {
             return
         }
 
-        const user = await req.models.User.findOne({ where: { user_email: value.user_email } })
+        let user = undefined
+        // catch error if user_email is invalid
+        try {
+            user = await req.models.User.findOne({ where: { user_email: value.user_email } })
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return            
+        }
         if(user) {
             next(new ValidationError(400, "This user is already registered, please log in"))
             return
@@ -51,10 +58,18 @@ const POST = async (req, res, next) => {
 
 const VERIFY = async (req, res, next) => {
     try {
-        // get user from db
-        const user = await req.models.User.findOne({ where: { user_id: req.params.id } }) 
+        // get user from db and checking to catch error if params invalid
+        let user = undefined
+        try {
+            user = await req.models.User.findOne({ where: { user_id: req.params.id } }) 
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return            
+        }
+
         if(!user) {
             next(new NotFoundError(404, "such user is not fount!"))
+            return
         }
 
         // token parse
@@ -62,6 +77,7 @@ const VERIFY = async (req, res, next) => {
 
         if(user_data.user_id != user.user_id) {
             next(new ValidationError(400, 'token is not matched with original one'))
+            return
         }
 
         // update the user status
@@ -81,8 +97,14 @@ const VERIFY = async (req, res, next) => {
 
 const RESEND_EMAIL = async (req, res, next) => {
    try {
-        // get user from db
-        const user = await req.models.User.findOne({ where: { user_id: req.params.user_id } })
+        // get user from db and checking to catch error if params invalid
+        let user = undefined
+        try {
+            user = await req.models.User.findOne({ where: { user_id: req.params.user_id } })
+        } catch (error) {
+            next(new ValidationError(400, error.message))
+            return            
+        }
 
         // check the user
         if(!user) {

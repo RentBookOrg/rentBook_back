@@ -5,9 +5,9 @@ const GET = async (req, res, next) => {
         try {
             user = await req.models.User.findOne({ where: { user_id: req.query.user_id }, 
                 attributes: ['user_id', 'name', 'username', 'user_email', 'user_verified'] })
-    
         } catch (error) {
             next(new ValidationError(400, error.message))
+            return
         }
         
         if(!user) {
