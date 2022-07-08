@@ -30,7 +30,6 @@ const POST = async (req, res, next) => {
             next(new ValidationError(400, error.message))
             return
         }
-
         if( !(req.files.file.mimetype.includes('image/')) ) {
             next(new ValidationError(400, 'Only image type is accepted'))
             return
