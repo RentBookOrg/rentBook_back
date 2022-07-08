@@ -62,7 +62,7 @@ export default async function({ sequelize }) {
             allowNull: false,
             validate: {
                 len: {
-                    args: [5, 256],
+                    args: [5, 100],
                     msg: 'please, enter valid address'
                 }
             }
