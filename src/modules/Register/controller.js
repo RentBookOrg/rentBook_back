@@ -84,8 +84,7 @@ const VERIFY = async (req, res, next) => {
         user.user_verified = true
         await user.save()
 
-        res.status(200)
-            .json({ message: 'Email verified successfully', status: 200 })
+        res.redirect(`${process.env.SERVER_HOST}:4000/cabinet`)
     } catch (e) {
         if(e.message == 'invalid token') {
             next(new ValidationError(400, "invalid token, please request resend email verification"))
