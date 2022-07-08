@@ -64,7 +64,7 @@ const GET_ORDER = async (req, res, next) => {
                 surname: req.body.surname,
                 order_mode: 'rent',
                 address: req.body.address,
-                book_id: book_id,
+                book_id: book.book_id,
                 book_name: book.book_name
             }
 
@@ -95,7 +95,7 @@ const GET_ORDER = async (req, res, next) => {
                 surname: req.body.surname,
                 order_mode: 'buy',
                 address: req.body.address,
-                book_id: book_id,
+                book_id: book.book_id,
                 book_name: book.book_name
             }
 
