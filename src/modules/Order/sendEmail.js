@@ -17,8 +17,8 @@ export default async function(data, message, email, type) {
           to: email,
           subject: "New order notification",
           text: `${message}, \n User info: ${data}`,
-          html: `<p>You may approve the order by clicking the link below: </p><br><a href=${HOST}:5000/book/approve/${data.book_id}/${data.order_id}"">Approve</a>
-          <p>You may reject the order by clicking the link below: </p><br><a href=${HOST}:5000/book/reject/${data.book_id}/${data.order_id}"">Reject</a>`
+          html: `<p>You may approve the order by clicking the link below: </p><br><a href=${HOST}:5000/order/approve/${data.book_id}/${data.order_id}"">Approve</a>
+          <p>You may reject the order by clicking the link below: </p><br><a href=${HOST}:5000/order/reject/${data.book_id}/${data.order_id}"">Reject</a>`
         })
       } 
 
@@ -28,8 +28,8 @@ export default async function(data, message, email, type) {
           to: email,
           subject: "New order notification",
           text: `${message}, \n User info: ${data}`,
-          html: `<p>You may approve the order by clicking the link below: </p><br><a href=${HOST}:5000/book/buy/approve/${data.order_id}"">Approve</a>
-          <p>You may reject the order by clicking the link below: </p><br><a href=${HOST}:5000/book/buy/reject/${data.order_id}"">Reject</a>`
+          html: `<p>You may approve the order by clicking the link below: </p><br><a href=${HOST}:5000/order/buy/approve/${data.order_id}"">Approve</a>
+          <p>You may reject the order by clicking the link below: </p><br><a href=${HOST}:5000/order/buy/reject/${data.order_id}"">Reject</a>`
         })
       } 
 
