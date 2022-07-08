@@ -1,5 +1,4 @@
 import nodeMailer from 'nodemailer'
-const HOST = 'http://localhost'
 
 export default async function(id, token, email) {
     try {
@@ -16,7 +15,7 @@ export default async function(id, token, email) {
         to: email,
         subject: "Verification email",
         text: "Please, verify your email by press the link below!",
-        html: `<p><a href="${HOST}:5000/${id}/verify/${token}"> Please, verify your account by clicking the link!</p>`
+        html: `<p><a href="${process.env.SERVER_HOST}:5000/${id}/verify/${token}"> Please, verify your account by clicking the link!</p>`
       })
 
     } catch (e) {
