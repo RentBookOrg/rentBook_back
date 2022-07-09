@@ -14,7 +14,9 @@ const GET_ORDER = async (req, res, next) => {
         // get specific book from db
         let book = undefined
         try {
-            book = await req.models.Book.findOne({ where: { book_id: req.params.book_id } })
+            // book = await req.models.Book.findOne({ where: { book_id: req.params.book_id } })
+            book = await req.sequelize.query(`SELECT b.*, u.user_email FROM books as b
+            INNER JOIN users AS u ON b.book_id = '${req.params.book_id}'`)
         } catch (error) {
             next(new ValidationError(400, error.message))
             return
@@ -68,7 +70,7 @@ const GET_ORDER = async (req, res, next) => {
                 book_name: book.book_name
             }
 
-            await sendEmail(data, `You have new order. Please, see the user info and approve or reject it`, req.body.email, 'order')
+            await sendEmail(data, `You have new order. Please, see the user info and approve or reject it`, book.user_email, 'order')
 
             res.status(200).json({ status: 200, message: 'Order email is sent', order_id: order.order_id })
         } else if(req.params.mode == 'buy') {
@@ -99,7 +101,7 @@ const GET_ORDER = async (req, res, next) => {
                 book_name: book.book_name
             }
 
-            await sendEmail(data, `You have new order. Please, see the user info and approve or reject it`, order.email, 'buy')
+            await sendEmail(data, `You have new order. Please, see the user info and approve or reject it`, book.user_email, 'buy')
             res.status(200).json({ status: 200, message: "Order email is sent successfully" , order_id: order.order_id})
 
         }
