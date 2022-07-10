@@ -104,7 +104,7 @@ export default async function ({ sequelize }) {
         allowNull: false,
         validate: {
           min: {
-            args: 0,
+            args: 1,
             msg: "minimum count of the book should be at least 1",
           },
           max: {
