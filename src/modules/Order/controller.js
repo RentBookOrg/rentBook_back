@@ -164,9 +164,10 @@ const APPROVE_RENT = async (req, res, next) => {
       where: { book_id: order.book_id },
     });
     // update order info
-    book.book_count = book.book_count <= 0 ? 0 : book.book_count - 1;
-    if (book.book_count == 0) {
+    if (book.book_count - 1 == 0) {
       book.book_available = false;
+    } else {
+      book.book_count = book.book_count <= 1 ? 1 : book.book_count - 1;
     }
     order.order_approved = true;
     // save updated info
@@ -276,9 +277,10 @@ const APPROVE_BUY = async (req, res, next) => {
     });
 
     // update order info
-    book.book_count = book.book_count <= 0 ? 0 : book.book_count - 1;
-    if (book.book_count == 0) {
+    if (book.book_count - 1 == 0) {
       book.book_available = false;
+    } else {
+      book.book_count = book.book_count <= 1 ? 1 : book.book_count - 1;
     }
     order.order_approved = true;
     // save updated info
